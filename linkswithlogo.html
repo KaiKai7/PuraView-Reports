@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Find your CCR</title>
     <style>
         body {
@@ -63,10 +64,63 @@
             height: auto; /* Maintain aspect ratio */
             margin-bottom: 20px; /* Add some space below the logo */
         }
+
+        /* Style for the new button */
+        .check-connection-btn {
+            background-color: #006600;
+            color: #ffffff;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .check-connection-btn:hover {
+            background-color: #009900;
+        }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            z-index: 1000;
+        }
+
+        .popup.visible {
+            display: block;
+        }
+
+        .success-popup {
+            background-color: #28a745;
+        }
+
+        .error-popup {
+            background-color: #dc3545;
+        }
     </style>
 </head>
 <body>
     <img src="https://raw.githubusercontent.com/KaiKai7/PuraView-Contaminant-Lookup/main/PuraView%20round.png" alt="Logo" class="logo">
+    
+    <!-- "Check Connection" button -->
+    <button onclick="checkConnection()" class="check-connection-btn">Check EPA Server Connection</button>
+
+    <!-- Success Popup -->
+    <div class="popup" id="successPopup">
+        Successfully Connected!
+    </div>
+
+    <!-- Error Popup -->
+    <div class="popup" id="errorPopup">
+        Cannot Connect To Server, Try again in a few minutes.
+    </div>
     
     <h1><strong>Find your CCR</strong></h1>
     <p>Enter your state and city below to find your Consumer Confidence Report (CCR) for drinking water quality.</p>
@@ -97,7 +151,35 @@
         
         <input type="submit" value="Submit">
     </form>
+
     <script>
+        function checkConnection() {
+            const corsProxy = 'https://api.allorigins.win/raw?url=';
+            const url = 'https://validator.swagger.io/validator/debug?url=https%3A%2F%2Fechodata.epa.gov%2Fecho%2Fswaggerx.swagger_json%3Fp_prefix%3DSDW';
+
+            fetch(corsProxy + url)
+                .then(response => {
+                    if (response.ok) {
+                        showPopup('successPopup');
+                    } else {
+                        showPopup('errorPopup');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking connection:', error);
+                    showPopup('errorPopup');
+                });
+        }
+
+        function showPopup(id) {
+            const popup = document.getElementById(id);
+            popup.classList.add('popup', 'visible');
+
+            setTimeout(() => {
+                popup.classList.remove('visible');
+            }, 5000); // 5 seconds
+        }
+
         document.getElementById('ccrForm').addEventListener('submit', function(e) {
             e.preventDefault();
             var state = document.getElementById('state').value.toUpperCase();
