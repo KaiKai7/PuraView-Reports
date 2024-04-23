@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Find your CCR</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center; /* Center align content */
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"], input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #003300;
+            background-color: #001a00;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+
+        input[type="text"]:focus, input[type="submit"]:focus {
+            outline: none;
+        }
+
+        input[type="submit"] {
+            width: auto;
+            background-color: #004d00;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #006600;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto;
+            width: 200px; /* Set desired width */
+            height: auto; /* Maintain aspect ratio */
+            margin-bottom: 20px; /* Add some space below the logo */
+        }
+    </style>
+</head>
+<body>
+    <img src="https://raw.githubusercontent.com/KaiKai7/PuraView-Contaminant-Lookup/main/PuraView%20round.png" alt="Logo" class="logo">
+    
+    <h1><strong>Find your CCR</strong></h1>
+    <p>Enter your state and city below to find your Consumer Confidence Report (CCR) for drinking water quality.</p>
+    <form id="ccrForm" action="https://sdwis.epa.gov/ords/safewater/f?p=136:103::::103:P103_STATE,P103_WATER_SYSTEM_NAME,P103_CITY:" method="get">
+        <label for="state">State (2 digit code):</label>
+        <input type="text" id="state" name="P103_STATE" maxlength="2" required>
+        
+        <label for="city">City:</label>
+        <input type="text" id="city" name="P103_CITY" required>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2><strong>FRS Facility Detail Report</strong></h2>
+    <p>Get facility contact info such as phone number, personnel, maps and more.</p>
+    <form id="frsForm" action="https://ofmpub.epa.gov/frs_public2/fii_query_dtl.disp_program_facility" method="get">
+        <label for="registryID">Registry ID:</label>
+        <input type="text" id="registryID" name="p_registry_id" required>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2><strong>Find Contamination Nearby</strong></h2>
+    <p>Enter a zip code to find contaminated cleanup sites.</p>
+    <form id="contaminationForm" action="https://map22.epa.gov/cimc/zip" method="get">
+        <label for="zip">Zip Code:</label>
+        <input type="text" id="zip" name="params" required>
+        
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        document.getElementById('ccrForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var state = document.getElementById('state').value.toUpperCase();
+            var city = document.getElementById('city').value.replace(/\s+/g, '+');
+            var url = "https://sdwis.epa.gov/ords/safewater/f?p=136:103::::103:P103_STATE,P103_WATER_SYSTEM_NAME,P103_CITY:" + state + ",," + city;
+            window.open(url, '_blank');
+        });
+
+        document.getElementById('frsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var registryID = document.getElementById('registryID').value;
+            var url = "https://ofmpub.epa.gov/frs_public2/fii_query_dtl.disp_program_facility?p_registry_id=" + registryID;
+            window.open(url, '_blank');
+        });
+
+        document.getElementById('contaminationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var zip = document.getElementById('zip').value;
+            var url = "https://map22.epa.gov/cimc/zip&params=" + zip;
+            window.open(url, '_blank');
+        });
+    </script>
+</body>
+</html>
