@@ -86,11 +86,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 20px;
-            border-radius: 8px;
+            padding: 30px;
+            border-radius: 15px;
             background-color: rgba(0, 0, 0, 0.8);
             color: #ffffff;
             z-index: 1000;
+            max-width: 80%;
         }
 
         .popup.visible {
@@ -110,7 +111,7 @@
     <img src="https://raw.githubusercontent.com/KaiKai7/PuraView-Contaminant-Lookup/main/PuraView%20round.png" alt="Logo" class="logo">
     
     <!-- "Check Connection" button -->
-    <button onclick="checkConnection()" class="check-connection-btn">Check EPA Server Connection</button>
+    <button onclick="checkConnection()" class="check-connection-btn">Check Connection</button>
 
     <!-- Success Popup -->
     <div class="popup" id="successPopup">
@@ -152,6 +153,18 @@
         <input type="submit" value="Submit">
     </form>
 
+    <h2><strong>How's My Waterway?</strong></h2>
+    <p>Check the overall health of your local waterways regarding drinking water, swimming, fishing, aquatic life and much more. Gives passing or failing grades to the waterway's health. There is also good information on local drinking water providers. Make sure to let fully load when first visiting. Also note the tabs, each one has more information.</p>
+    <form id="waterwayForm" onsubmit="return false;">
+        <label for="cityWaterway">City:</label>
+        <input type="text" id="cityWaterway" name="city" placeholder="Enter City">
+        
+        <label for="stateWaterway">State (2 digit code):</label>
+        <input type="text" id="stateWaterway" name="state" maxlength="2" placeholder="Enter 2 digit abbreviated State">
+
+        <button onclick="checkWaterway()">Check Waterway</button>
+    </form>
+
     <script>
         function checkConnection() {
             const corsProxy = 'https://api.allorigins.win/raw?url=';
@@ -178,6 +191,13 @@
             setTimeout(() => {
                 popup.classList.remove('visible');
             }, 5000); // 5 seconds
+        }
+
+        function checkWaterway() {
+            var city = document.getElementById('cityWaterway').value.trim().replace(/\s+/g, '+');
+            var state = document.getElementById('stateWaterway').value.trim().toUpperCase();
+            var url = "https://mywaterway.epa.gov/community/" + city + "," + state + ",%20USA/overview";
+            window.open(url, '_blank');
         }
 
         document.getElementById('ccrForm').addEventListener('submit', function(e) {
