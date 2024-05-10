@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Find your CCR</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center; /* Center align content */
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"], input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #003300;
+            background-color: #001a00;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+
+        input[type="text"]:focus, input[type="submit"]:focus {
+            outline: none;
+        }
+
+        input[type="submit"] {
+            width: auto;
+            background-color: #004d00;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #006600;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto;
+            width: 200px; /* Set desired width */
+            height: auto; /* Maintain aspect ratio */
+            margin-bottom: 20px; /* Add some space below the logo */
+        }
+
+        /* Style for the new button */
+        .check-connection-btn {
+            background-color: #006600;
+            color: #ffffff;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .check-connection-btn:hover {
+            background-color: #009900;
+        }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            z-index: 1000;
+            max-width: 80%;
+        }
+
+        .popup.visible {
+            display: block;
+        }
+
+        .success-popup {
+            background-color: #28a745;
+        }
+
+        .error-popup {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://raw.githubusercontent.com/KaiKai7/PuraView-Contaminant-Lookup/main/PuraView%20round.png" alt="Logo" class="logo">
+
+<p>This app was made free of charge so that everybody can easily see what is in their water. Show your support by clicking the link below !</p>
+    <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="calibluesea" data-color="#FFDD00" data-emoji="☕"  data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+
+    <br> <!-- Add a line break for spacing -->
+
+    <p>Use to help verify if the EPA server is experiencing downtime. This can happen frequently due to updates and regular server maintenance. When this happens simply wait a minute and try again.</p>
+    <!-- Updated "Check Connection" button -->
+    <button onclick="checkURL()" class="check-connection-btn">Check EPA Server</button>
+
+    <!-- Your existing HTML content -->
+
+    <h1><strong>Find your CCR</strong></h1>
+    <p>Enter your state and city below to find your Consumer Confidence Report (CCR) for drinking water quality. To find a report here, your drinking water provider would have had to submit it to be listed. Even if not listed, there is a chance that it may still be online.</p>
+    <form id="ccrForm" action="https://sdwis.epa.gov/ords/safewater/f?p=136:103::::103:P103_STATE,P103_WATER_SYSTEM_NAME,P103_CITY:" method="get">
+        <label for="state">State (2 digit code):</label>
+        <input type="text" id="state" name="P103_STATE" maxlength="2" required>
+        
+        <label for="city">City:</label>
+        <input type="text" id="city" name="P103_CITY" required>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Your existing HTML content -->
+
+    <h2><strong>FRS Facility Detail Report</strong></h2>
+    <p>Get facility contact info such as phone number, personnel, maps and more. You can copy and paste the Registry ID from PuraView for the facility you wish to view. If you were not successful in finding a CCR, try contacting the facility using the information found here</p>
+    <form id="frsForm" action="https://ofmpub.epa.gov/frs_public2/fii_query_dtl.disp_program_facility" method="get">
+        <label for="registryID">Registry ID:</label>
+        <input type="text" id="registryID" name="p_registry_id" required>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Your existing HTML content -->
+
+    <h2><strong>Find Contamination Nearby</strong></h2>
+    <p>Enter a zip code to find contaminated cleanup sites.</p>
+    <form id="contaminationForm" action="https://map22.epa.gov/cimc/zip" method="get">
+        <label for="zip">Zip Code:</label>
+        <input type="text" id="zip" name="params" required>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Your existing HTML content -->
+
+    <h2><strong>How's My Waterway?</strong></h2>
+    <p>Check the overall health of your local waterways regarding drinking water, swimming, fishing, aquatic life and much more. Gives passing or failing grades to the waterway's health. There is also good information on local drinking water providers. Make sure to let fully load when first visiting. Also note the tabs, each one has more information.</p>
+    <form id="waterwayForm" onsubmit="return false;">
+        <label for="cityWaterway">City:</label>
+        <input type="text" id="cityWaterway" name="city" placeholder="Enter City">
+        
+        <label for="stateWaterway">State (2 digit code):</label>
+        <input type="text" id="stateWaterway" name="state" maxlength="2" placeholder="Enter 2 digit abbreviated State">
+
+        <button onclick="checkWaterway()">Check Waterway</button>
+    </form>
+
+    <!-- Your existing JavaScript content -->
+
+    <script>
+        function checkURL() {
+            fetch('https://validator.swagger.io/validator/debug?url=https%3A%2F%2Fechodata.epa.gov%2Fecho%2Fswaggerx.swagger_json%3Fp_prefix%3DSDW')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.level === 'error' && data.message === "Can't read from file https://echodata.epa.gov/echo/swaggerx.swagger_json?p_prefix=DFR") {
+                        alert("EPA Server cannot be reached, try again in a few minutes");
+                    } else if (JSON.stringify(data) === '{"schemaValidationMessages":[]}') {
+                        alert("EPA API Validator Is Successful. If PuraView cannot connect, check network settings and verify connection. You can also try restarting the app and/or your device.");
+                    } else {
+                        // Do something else if needed
+                    }
+                })
+                .catch(error => {
+            console.error('Error:', error);
+            alert("Error: Unable to connect to the server. Please check your network connection and try again later.");
+        });
+        }
+
+        function checkWaterway() {
+            var city = document.getElementById('cityWaterway').value.trim().replace(/\s+/g, '+');
+            var state = document.getElementById('stateWaterway').value.trim().toUpperCase();
+            var url = "https://mywaterway.epa.gov/community/" + city + "," + state + ",%20USA/overview";
+            window.open(url, '_blank');
+        }
+
+        document.getElementById('frsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var registryID = document.getElementById('registryID').value;
+            var url = "https://ofmpub.epa.gov/frs_public2/fii_query_dtl.disp_program_facility?p_registry_id=" + registryID;
+            window.open(url, '_blank');
+        });
+
+        document.getElementById('contaminationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var zip = document.getElementById('zip').value;
+            var url = "https://map22.epa.gov/cimc/zip&params=" + zip;
+            window.open(url, '_blank');
+        });
+    </script>
+</body>
+</html>
