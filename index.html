@@ -117,14 +117,13 @@
     <button onclick="checkURL()" class="check-connection-btn">Check EPA Server</button>
 
     <h1><strong>Find your CCR</strong></h1>
-    <p>Enter your state and city below to find your Consumer Confidence Report (CCR) for drinking water quality. To find a report here, your drinking water provider would have had to submit it to be listed. Even if not listed, there is a chance that it may still be online.</p>
+    <p>Click the Submit button to find your Consumer Confidence Report (CCR) for drinking water quality. To find a report here, your drinking water provider would have had to submit it to be listed. Even if not listed, there is a chance that it may still be online.</p>
     <form id="ccrForm" method="get">
-        <label for="state">State (2 digit code):</label>
-        <input type="text" id="state" name="P103_STATE" maxlength="2" required>
+        <!-- Removed the State and City fields -->
+        <!-- Removed label and input for State -->
+        <!-- Removed label and input for City -->
         
-        <label for="city">City:</label>
-        <input type="text" id="city" name="P103_CITY" required>
-        
+        <!-- Modified the Submit button to go to the specified link -->
         <input type="submit" value="Submit">
     </form>
 
@@ -187,14 +186,8 @@
         document.getElementById('ccrForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent the default form submission
 
-            // Get the values of state and city from the form
-            var state = document.getElementById('state').value.trim();
-            var city = document.getElementById('city').value.trim();
-
-            // Construct the URL with the parameters
-            var url = "https://sdwis.epa.gov/ords/safewater/f?p=136:103::::103:P103_STATE,P103_CITY:" + state + "," + city;
-
-            // Open the URL in a new tab/window
+            // Open the specified URL in a new tab/window
+            var url = "https://sdwis.epa.gov/ords/safewater/f?p=ccr_wyl:102";
             window.open(url, '_blank');
         });
 
